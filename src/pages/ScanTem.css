@@ -1,0 +1,138 @@
+.scan-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.scan-input-area {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.scan-input-area:focus-within {
+  border-color: #32c5d2;
+  box-shadow: 0 4px 20px rgba(50, 197, 210, 0.2);
+}
+
+.scan-instruction {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.scan-form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.scan-input {
+  width: 100%;
+  padding: 18px 25px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s;
+  letter-spacing: 2px;
+  color: #333;
+}
+
+.scan-input:focus {
+  border-color: #32c5d2;
+  background-color: #fcfcfc;
+}
+
+.scan-history-area {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.history-title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.history-list {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 5px solid;
+  background: #fafafa;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.history-item.status-ok {
+  border-left-color: #32c5d2;
+}
+
+.history-item.status-ng {
+  border-left-color: #e73d4a;
+  background: #fffafa;
+}
+
+.history-icon {
+  margin-right: 15px;
+}
+
+.history-content {
+  flex: 1;
+}
+
+.history-barcode {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.history-time {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.history-reason {
+  font-size: 13px;
+  color: #e73d4a;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.history-badge {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.status-ok .history-badge {
+  background: rgba(50, 197, 210, 0.1);
+  color: #32c5d2;
+}
+
+.status-ng .history-badge {
+  background: rgba(231, 61, 74, 0.1);
+  color: #e73d4a;
+}

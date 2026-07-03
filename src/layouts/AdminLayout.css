@@ -1,0 +1,241 @@
+/* AdminLayout.css */
+
+.admin-container {
+  display: flex;
+  min-height: 100%;
+  width: 100vw;
+  background-color: #eef2f5;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: linear-gradient(180deg, #1565c0 0%, #0d47a1 100%);
+  color: #e3f2fd;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s;
+  flex-shrink: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+.sidebar.closed {
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebar-logo {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0px rgba(255,255,255,0.2), 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-category {
+  padding: 15px 20px 5px 20px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #90caf9;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+  margin: 8px 15px;
+  border-radius: 8px;
+  color: #e3f2fd;
+  background-color: #1976d2; /* Lighter, distinct blue */
+  text-decoration: none;
+  font-size: 14px; /* Tối ưu cho giao diện điện thoại */
+  font-weight: 600;
+  transition: all 0.15s ease-in-out;
+  border: 1px solid #42a5f5; /* Light blue border */
+  box-shadow: 0 4px 0 #0d47a1, 0 5px 5px rgba(0,0,0,0.2);
+}
+
+.nav-link:hover {
+  background-color: #1e88e5;
+  color: #ffd32a;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #0d47a1, 0 3px 3px rgba(0,0,0,0.2);
+}
+
+.nav-link:active {
+  transform: translateY(4px);
+  box-shadow: 0 0px 0 #0d47a1;
+}
+
+.nav-link.active {
+  background-color: #1565c0;
+  color: #ffd32a;
+  border-color: #ffd32a;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #0a3d62, 0 3px 3px rgba(0,0,0,0.2);
+  text-shadow: 0 0 8px rgba(255, 211, 42, 0.5);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  height: 60px;
+  background: linear-gradient(90deg, #1565c0 0%, #0d47a1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10;
+  color: #fff;
+}
+
+.menu-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #e3f2fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.menu-toggle:hover {
+  color: #ffd32a;
+}
+
+.user-profile {
+  position: relative;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #e3f2fd;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-info:hover {
+  color: #ffd32a;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 12px;
+  background: #fff;
+  min-width: 220px;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,0,0,0.05);
+  padding: 0;
+  z-index: 100;
+  animation: dropdownFadeIn 0.2s ease-out forwards;
+}
+
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  color: #444;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f4f6f8;
+  color: #32c5d2;
+  padding-left: 22px;
+}
+
+.dropdown-item.logout-item:hover {
+  background-color: #fdf3f4;
+  color: #e73d4a;
+  padding-left: 22px;
+}
+
+/* Page Content */
+.page-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #eef2f5;
+}
+
+/* Globals for body to fix center alignment bug */
+body {
+  margin: 0;
+  padding: 0;
+  display: block;
+  background: #eef2f5;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  font-weight: 400;
+  color: #333;
+}
