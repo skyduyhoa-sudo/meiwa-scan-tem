@@ -43,31 +43,31 @@ export default function Login() {
       <div className="login-card">
         <div className="login-header">
           <h2>MEIWA SCAN TEM</h2>
-          <p>HềEthống Quản lý Đối chiếu Hàng hóa</p>
+          <p>Hệ thống Quản lý Đối chiếu Hàng hóa<br/><span style={{ fontSize: '0.85em', opacity: 0.8 }}>商品照合管理システム</span></p>
         </div>
         <form className="login-form" onSubmit={handleLogin}>
           <div className="form-group">
-            <label>Tên đăng nhập</label>
+            <label>Tên đăng nhập <span style={{ display: 'block', fontSize: '0.85em', opacity: 0.8, marginTop: '2px' }}>ユーザー名</span></label>
             <input 
               type="text" 
               className="form-control" 
-              placeholder="Nhập tên đăng nhập..."
+              placeholder="Nhập tên đăng nhập... / ユーザー名を入力..."
               value={username}
               onChange={e => setUsername(e.target.value)}
             />
           </div>
           <div className="form-group">
-            <label>Mật khẩu</label>
+            <label>Mật khẩu <span style={{ display: 'block', fontSize: '0.85em', opacity: 0.8, marginTop: '2px' }}>パスワード</span></label>
             <input 
               type="password" 
               className="form-control" 
-              placeholder="Nhập mật khẩu..."
+              placeholder="Nhập mật khẩu... / パスワードを入力..."
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
           </div>
           <button type="submit" className="btn-login" disabled={loading}>
-            {loading ? 'Đang xác thực...' : 'Đăng nhập'}
+            {loading ? 'Đang xác thực... / 認証中...' : 'Đăng nhập / ログイン'}
           </button>
         </form>
       </div>
