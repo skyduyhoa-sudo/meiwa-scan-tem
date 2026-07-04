@@ -163,12 +163,13 @@ export default function AdminLayout({ children }) {
             </button>
             <h1 style={{ 
               margin: 0, 
-              fontSize: '18px', 
+              fontSize: '14px', 
               fontWeight: '800', 
               color: '#fff', 
               letterSpacing: '0.5px', 
               textTransform: 'uppercase',
-              textShadow: '1px 1px 0px rgba(0,0,0,0.2), 2px 2px 4px rgba(0,0,0,0.5)' 
+              textShadow: '1px 1px 0px rgba(0,0,0,0.2), 2px 2px 4px rgba(0,0,0,0.5)',
+              whiteSpace: 'nowrap'
             }}>
               Công Ty TNHH Việt Nam Meiwa
             </h1>
@@ -221,7 +222,7 @@ export default function AdminLayout({ children }) {
                 <div className="user-dropdown">
                   <div className="dropdown-header" style={{ padding: '12px 15px', borderBottom: '1px solid #eee', backgroundColor: '#f8f9fa', borderTopLeftRadius: '6px', borderTopRightRadius: '6px' }}>
                     <div style={{ fontWeight: '600', color: '#333', fontSize: '14px' }}>{displayName}</div>
-                    <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>Quản trềEviên</div>
+                    <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>Quản trị viên</div>
                   </div>
                   <div className="dropdown-item" onClick={() => { setIsProfileModalOpen(true); setUserMenuOpen(false); }} style={{ marginTop: '5px' }}>
                     <User size={15} style={{ color: '#32c5d2' }}/> <span style={{ fontWeight: '500' }}>{t('header.profile')}</span>
