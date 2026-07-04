@@ -562,6 +562,22 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Backend server is running on port ${PORT}`);
+  try {
+    const userCount = await prisma.user.count();
+    if (userCount === 0) {
+      console.log('No users found. Seeding default Admin user...');
+      let adminRole = await prisma.role.findFirst({ where: { name: 'Admin' } });
+      if (!adminRole) adminRole = await prisma.role.create({ data: { name: 'Admin' } });
+      
+      const hashedPassword = await bcrypt.hash('admin', 10);
+      await prisma.user.create({
+        data: { username: 'admin', password: hashedPassword, firstName: 'Admin', lastName: 'System', roleId: adminRole.id }
+      });
+      console.log('Default admin user created: admin / admin');
+    }
+  } catch (err) {
+    console.error('Error seeding admin:', err.message);
+  }
 });
