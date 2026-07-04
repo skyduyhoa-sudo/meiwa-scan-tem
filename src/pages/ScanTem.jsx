@@ -213,7 +213,7 @@ export default function ScanTem() {
         <Modal isOpen={true} title={t('scan.title')} onClose={() => setIsScanModalOpen(false)}>
           <div style={{ padding: '10px' }}>
             {/* 3 Dropdowns */}
-            <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
+            <div className="scan-dropdown-group" style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
               <div style={{ flex: 1 }}>
                 <label style={{ display: 'block', fontSize: '13px', marginBottom: '5px', color: '#555' }}>{t('scan.stampType')}</label>
                 <select style={{ width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px', fontSize: '13px' }}>

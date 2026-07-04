@@ -171,7 +171,7 @@ export default function AdminLayout({ children }) {
               textShadow: '1px 1px 0px rgba(0,0,0,0.2), 2px 2px 4px rgba(0,0,0,0.5)',
               whiteSpace: 'nowrap'
             }}>
-              Công Ty TNHH Việt Nam Meiwa
+              <span className="company-name">Công Ty TNHH Việt Nam </span>MEIWA
             </h1>
           </div>
           

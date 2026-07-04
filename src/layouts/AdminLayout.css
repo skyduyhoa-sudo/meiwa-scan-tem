@@ -239,3 +239,45 @@ body {
   font-weight: 400;
   color: #333;
 }
+/* Mobile Responsive Overrides */
+@media screen and (max-width: 768px) {
+  .admin-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 60px);
+    z-index: 999;
+    transition: left 0.3s ease;
+  }
+  .sidebar:not(.closed) {
+    left: 0;
+    width: 100%;
+  }
+  .sidebar.closed {
+    width: 100%; /* prevent flex shrink bug */
+  }
+  .company-name {
+    display: none !important;
+  }
+  .lang-switcher {
+    position: static !important;
+    transform: none !important;
+  }
+  .header-right {
+    gap: 10px !important;
+  }
+  .user-info span {
+    display: none;
+  }
+  .modal-content {
+    width: 95% !important;
+    margin: 10px auto !important;
+  }
+  .scan-dropdown-group {
+    flex-direction: column !important;
+  }
+}
