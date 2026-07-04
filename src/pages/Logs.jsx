@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AdminLayout from '../layouts/AdminLayout';
 import GridTable from '../components/GridTable';
 import { Home, Eye, FileText, Download } from 'lucide-react';
@@ -17,16 +17,16 @@ export default function Logs() {
     if (!msg) return msg;
     
     let text = msg;
-    text = text.replace('ﾄ静｣ import d盻ｯ li盻㎡ t盻ｫ file', '繝輔ぃ繧､繝ｫ縺九ｉ縺ｮ繝・・繧ｿ繧､繝ｳ繝昴・繝亥ｮ御ｺ・');
-    text = text.replace('ﾄ静｣ thﾃｪm s蘯｣n ph蘯ｩm:', '陬ｽ蜩√ｒ霑ｽ蜉縺励∪縺励◆:');
-    text = text.replace('ﾄ静｣ c蘯ｭp nh蘯ｭt s蘯｣n ph蘯ｩm:', '陬ｽ蜩√ｒ譖ｴ譁ｰ縺励∪縺励◆:');
-    text = text.replace('ﾄ静｣ xﾃｳa s蘯｣n ph蘯ｩm:', '陬ｽ蜩√ｒ蜑企勁縺励∪縺励◆:');
-    text = text.replace('ﾄ静｣ thﾃｪm ﾄ黛ｻ訴 tﾃ｡c:', '繝代・繝医リ繝ｼ繧定ｿｽ蜉縺励∪縺励◆:');
-    text = text.replace('ﾄ静｣ c蘯ｭp nh蘯ｭt ﾄ黛ｻ訴 tﾃ｡c:', '繝代・繝医リ繝ｼ繧呈峩譁ｰ縺励∪縺励◆:');
-    text = text.replace('ﾄ静｣ xﾃｳa ﾄ黛ｻ訴 tﾃ｡c:', '繝代・繝医リ繝ｼ繧貞炎髯､縺励∪縺励◆:');
-    text = text.replace('ﾄ斉ハg nh蘯ｭp khﾃｴng thﾃnh cﾃｴng', '繝ｭ繧ｰ繧､繝ｳ縺ｫ螟ｱ謨励＠縺ｾ縺励◆');
-    text = text.replace('ﾄ斉ハg nh蘯ｭp h盻・th盻創g', '繧ｷ繧ｹ繝・Β縺ｫ繝ｭ繧ｰ繧､繝ｳ縺励∪縺励◆');
-    text = text.replace('ﾄ静｣ thﾃｪm tﾃi kho蘯｣n:', '繧｢繧ｫ繧ｦ繝ｳ繝医ｒ霑ｽ蜉縺励∪縺励◆:');
+    text = text.replace('Đã import dữ liệu từ file', 'ファイルからのチE�Eタインポ�Eト完亁E');
+    text = text.replace('Đã thêm sản phẩm:', '製品を追加しました:');
+    text = text.replace('Đã cập nhật sản phẩm:', '製品を更新しました:');
+    text = text.replace('Đã xóa sản phẩm:', '製品を削除しました:');
+    text = text.replace('Đã thêm đối tác:', 'パ�Eトナーを追加しました:');
+    text = text.replace('Đã cập nhật đối tác:', 'パ�Eトナーを更新しました:');
+    text = text.replace('Đã xóa đối tác:', 'パ�Eトナーを削除しました:');
+    text = text.replace('Đăng nhập không thành công', 'ログインに失敗しました');
+    text = text.replace('Đăng nhập hềEthống', 'シスチE��にログインしました');
+    text = text.replace('Đã thêm tài khoản:', 'アカウントを追加しました:');
     
     return text;
   };
@@ -77,21 +77,21 @@ export default function Logs() {
   ];
 
   const handleExport = () => {
-    if (data.length === 0) return toast.warn('Khﾃｴng cﾃｳ d盻ｯ li盻㎡ ﾄ黛ｻ・xu蘯･t');
+    if (data.length === 0) return toast.warn('Không có dữ liệu đềExuất');
     
-    // Chu蘯ｩn b盻・d盻ｯ li盻㎡ cho Excel
+    // Chuẩn bềEdữ liệu cho Excel
     const exportData = data.map(item => ({
       'ID': item.id,
-      'Lo蘯｡i': item.type === 'ERROR' ? 'L盻擁' : 'Thﾃｴng bﾃ｡o',
-      'N盻冓 dung': item.message,
-      'Th盻拱 gian': new Date(item.createdAt).toLocaleString('vi-VN')
+      'Loại': item.type === 'ERROR' ? 'Lỗi' : 'Thông báo',
+      'Nội dung': item.message,
+      'Thời gian': new Date(item.createdAt).toLocaleString('vi-VN')
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Logs");
     
-    // T蘯｣i file xu盻創g
+    // Tải file xuống
     XLSX.writeFile(workbook, `NhatKy_HeThong_${new Date().toISOString().slice(0,10)}.xlsx`);
   };
 
@@ -123,6 +123,4 @@ export default function Logs() {
     </AdminLayout>
   );
 }
-
-
 

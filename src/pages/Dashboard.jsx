@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AdminLayout from '../layouts/AdminLayout';
 import { Home, Package, Users, FileText, CheckCircle, XCircle, Activity, Box } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -122,6 +122,4 @@ export default function Dashboard() {
     </AdminLayout>
   );
 }
-
-
 

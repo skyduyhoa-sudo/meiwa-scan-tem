@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AdminLayout from '../layouts/AdminLayout';
 import GridTable from '../components/GridTable';
 import Modal from '../components/Modal';
@@ -45,7 +45,7 @@ export default function ReferenceDocs() {
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!selectedFile) {
-      toast.error('Vui lﾃｲng ch盻肱 file ﾄ黛ｻ・import!');
+      toast.error('Vui lòng chọn file đềEimport!');
       return;
     }
 
@@ -58,12 +58,12 @@ export default function ReferenceDocs() {
       const response = await axios.post('/api/documents/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      toast.success(response.data.message || 'Import d盻ｯ li盻㎡ thﾃnh cﾃｴng!');
+      toast.success(response.data.message || 'Import dữ liệu thành công!');
       setIsImportModalOpen(false);
       setSelectedFile(null);
       fetchData(); // Reload table
     } catch (error) {
-      toast.error(error.response?.data?.message || 'L盻擁 khi import file!');
+      toast.error(error.response?.data?.message || 'Lỗi khi import file!');
     } finally {
       setIsUploading(false);
     }
@@ -155,8 +155,8 @@ export default function ReferenceDocs() {
         <form onSubmit={handleUpload}>
           <div style={{ padding: '20px', border: '2px dashed #ccc', textAlign: 'center', marginBottom: '20px', borderRadius: '8px' }}>
             <Upload size={40} color="#ccc" style={{ marginBottom: '10px' }} />
-            <p>Kﾃｩo th蘯｣ file vﾃo ﾄ妥｢y ho蘯ｷc nh蘯･n ﾄ黛ｻ・ch盻肱 file</p>
-            <p style={{ fontSize: '12px', color: '#666' }}>H盻・tr盻｣: .xlsx, .csv, .pdf, .docx, .png, .jpg</p>
+            <p>Kéo thả file vào đây hoặc nhấn đềEchọn file</p>
+            <p style={{ fontSize: '12px', color: '#666' }}>HềEtrợ: .xlsx, .csv, .pdf, .docx, .png, .jpg</p>
             <input 
               type="file" 
               accept=".xlsx,.xls,.csv,.pdf,.docx,.png,.jpg,.jpeg"
@@ -167,14 +167,14 @@ export default function ReferenceDocs() {
 
           {isUploading && (
             <div style={{ textAlign: 'center', marginBottom: '15px', color: '#32c5d2', fontWeight: 'bold' }}>
-              ﾄ紳ng x盻ｭ lﾃｽ tﾃi li盻㎡ (OCR / Parse)... Vui lﾃｲng ﾄ黛ｻ｣i.
+              Đang xử lý tài liệu (OCR / Parse)... Vui lòng đợi.
             </div>
           )}
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
             <button type="button" className="btn" onClick={() => setIsImportModalOpen(false)} disabled={isUploading}>{t('common.cancel')}</button>
             <button type="submit" className="btn green" disabled={isUploading || !selectedFile}>
-              {isUploading ? 'ﾄ紳ng Import...' : t('common.save')}
+              {isUploading ? 'Đang Import...' : t('common.save')}
             </button>
           </div>
         </form>
@@ -183,6 +183,4 @@ export default function ReferenceDocs() {
     </AdminLayout>
   );
 }
-
-
 

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AdminLayout from '../layouts/AdminLayout';
 import GridTable from '../components/GridTable';
 import Modal from '../components/Modal';
@@ -77,13 +77,13 @@ export default function Products() {
         await axios.post('/api/products', { name, code, partnerId });
         toast.success(t('products.addSuccess'));
       } else {
-        await axios.put(`/api/products/${currentId}`, { name, code, partnerId, status: 'ﾄ紳ng ho蘯｡t ﾄ黛ｻ冢g' });
+        await axios.put(`/api/products/${currentId}`, { name, code, partnerId, status: 'Đang hoạt động' });
         toast.success(t('products.updateSuccess'));
       }
       setIsModalOpen(false);
       fetchProducts();
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Cﾃｳ l盻擁 x蘯｣y ra!');
+      toast.error(error.response?.data?.message || 'Có lỗi xảy ra!');
     }
   };
 
@@ -160,7 +160,7 @@ export default function Products() {
         />
       )}
 
-      {/* Modal Thﾃｪm/S盻ｭa */}
+      {/* Modal Thêm/Sửa */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
@@ -208,6 +208,4 @@ export default function Products() {
     </AdminLayout>
   );
 }
-
-
 

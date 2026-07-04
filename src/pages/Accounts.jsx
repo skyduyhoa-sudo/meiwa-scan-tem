@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AdminLayout from '../layouts/AdminLayout';
 import GridTable from '../components/GridTable';
 import Modal from '../components/Modal';
@@ -63,7 +63,7 @@ export default function Accounts() {
     setModalMode('edit');
     setCurrentId(account.id);
     setUsername(account.username);
-    setPassword(''); // Khﾃｴng hi盻ハ th盻・password cﾅｩ
+    setPassword(''); // Không hiển thềEpassword cũ
     setFirstName(account.firstName);
     setLastName(account.lastName);
     setRoleId(account.roleId);
@@ -72,21 +72,21 @@ export default function Accounts() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!username || !firstName || !roleId) return toast.error('Vui lﾃｲng ﾄ訴盻］ ﾄ黛ｻｧ thﾃｴng tin b蘯ｯt bu盻冂');
+    if (!username || !firstName || !roleId) return toast.error('Vui lòng điền đủ thông tin bắt buộc');
 
     try {
       if (modalMode === 'add') {
-        if (!password) return toast.error('Vui lﾃｲng nh蘯ｭp m蘯ｭt kh蘯ｩu');
+        if (!password) return toast.error('Vui lòng nhập mật khẩu');
         await axios.post('/api/accounts', { username, password, firstName, lastName, roleId });
         toast.success(t('accounts.addSuccess'));
       } else {
-        await axios.put(`/api/accounts/${currentId}`, { username, firstName, lastName, roleId, status: 'ﾄ紳ng ho蘯｡t ﾄ黛ｻ冢g' });
+        await axios.put(`/api/accounts/${currentId}`, { username, firstName, lastName, roleId, status: 'Đang hoạt động' });
         toast.success(t('accounts.updateSuccess'));
       }
       setIsModalOpen(false);
       fetchData();
     } catch (error) {
-      toast.error('L盻擁 khi lﾆｰu d盻ｯ li盻㎡');
+      toast.error('Lỗi khi lưu dữ liệu');
     }
   };
 
@@ -206,6 +206,4 @@ export default function Accounts() {
     </AdminLayout>
   );
 }
-
-
 
