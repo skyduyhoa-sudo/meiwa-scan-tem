@@ -14,7 +14,7 @@ export default function ScanTem() {
   const [products, setProducts] = useState([]);
   const [isScanModalOpen, setIsScanModalOpen] = useState(false);
   
-  // States cho quá trình scan
+  // States cho quﾃ｡ trﾃｬnh scan
   const [barcode, setBarcode] = useState('');
   const [history, setHistory] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -33,7 +33,7 @@ export default function ScanTem() {
       const prResponse = await axios.get('/api/products');
       setProducts(prResponse.data);
     } catch (error) {
-      toast.error('Lỗi khi tải dữ liệu đối chiếu');
+      toast.error('L盻擁 khi t蘯｣i d盻ｯ li盻㎡ ﾄ黛ｻ訴 chi蘯ｿu');
     }
   };
 
@@ -41,7 +41,8 @@ export default function ScanTem() {
     fetchData();
   }, []);
 
-  // Luôn auto-focus vào ô input khi Modal Scan đang mềE  useEffect(() => {
+  // Luôn auto-focus vào ô input khi Modal Scan đang mở
+  useEffect(() => {
     let interval;
     if (isScanModalOpen) {
       inputRef.current?.focus();
@@ -79,16 +80,16 @@ export default function ScanTem() {
       setHistory(prev => [result, ...prev]);
 
       if (success) {
-        toast.success(t('scan.statusOk'), { icon: '🟢', position: "top-center", autoClose: 2000, theme: "colored" });
+        toast.success(t('scan.statusOk'), { icon: '泙', position: "top-center", autoClose: 2000, theme: "colored" });
         playSound('ok');
       } else {
-        toast.error(`${t('scan.statusNg')}: ${result.reason}`, { icon: '🔴', position: "top-center", autoClose: 5000, theme: "colored" });
+        toast.error(`${t('scan.statusNg')}: ${result.reason}`, { icon: '閥', position: "top-center", autoClose: 5000, theme: "colored" });
         playSound('ng');
       }
 
     } catch (error) {
-      const errorMsg = error.response?.data?.message || 'Lỗi kết nối Server';
-      toast.error(`${t('scan.statusNg')}: ${errorMsg}`, { icon: '🔴', position: "top-center", autoClose: 5000, theme: "colored" });
+      const errorMsg = error.response?.data?.message || 'L盻擁 k蘯ｿt n盻訴 Server';
+      toast.error(`${t('scan.statusNg')}: ${errorMsg}`, { icon: '閥', position: "top-center", autoClose: 5000, theme: "colored" });
       playSound('ng');
       
       setHistory(prev => [{
@@ -185,9 +186,9 @@ export default function ScanTem() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">◁E/div>
+        <div className="dot"></div>
         <span>{t('sidebar.operations')}</span>
-        <div className="dot">◁E/div>
+        <div className="dot"></div>
         <span>{t('sidebar.scanTem')}</span>
       </div>
       
@@ -242,7 +243,7 @@ export default function ScanTem() {
               </div>
             </div>
 
-            {/* Nút Kiểm tra */}
+            {/* Nﾃｺt Ki盻ノ tra */}
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
               <button 
                 onClick={handleScan}
@@ -256,7 +257,7 @@ export default function ScanTem() {
               </button>
             </div>
 
-            {/* ÁEvuông xanh (Khung quét) */}
+            {/* ﾃ・vuﾃｴng xanh (Khung quﾃｩt) */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
               <div style={{ 
                 width: '250px', height: '250px', 
@@ -286,14 +287,14 @@ export default function ScanTem() {
               {isProcessing && <p style={{ color: '#ffb822', marginTop: '10px', fontSize: '13px' }}>{t('scan.processing')}</p>}
             </div>
 
-            {/* Lịch sử mini (Giúp công nhân biết kết quả quét thay vì mù tịt) */}
+            {/* L盻議h s盻ｭ mini (Giﾃｺp cﾃｴng nhﾃ｢n bi蘯ｿt k蘯ｿt qu蘯｣ quﾃｩt thay vﾃｬ mﾃｹ t盻逆) */}
             {history.length > 0 && (
               <div style={{ textAlign: 'center', marginBottom: '20px', fontSize: '14px', fontWeight: 'bold', color: history[0].status === 'OK' ? '#28a745' : '#e73d4a' }}>
                 {t('scan.lastResult')} {history[0].barcode} - {history[0].status === 'OK' ? t('scan.valid') : `${t('scan.error')} (${history[0].reason})`}
               </div>
             )}
 
-            {/* Nút Hủy dưới cùng bên trái */}
+            {/* Nﾃｺt H盻ｧy dﾆｰ盻嬖 cﾃｹng bﾃｪn trﾃ｡i */}
             <div style={{ borderTop: '1px solid #eee', paddingTop: '15px' }}>
               <button 
                 onClick={() => setIsScanModalOpen(false)}
@@ -312,4 +313,6 @@ export default function ScanTem() {
     </AdminLayout>
   );
 }
+
+
 

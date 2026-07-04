@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import AdminLayout from '../layouts/AdminLayout';
 import GridTable from '../components/GridTable';
 import Modal from '../components/Modal';
@@ -63,13 +63,13 @@ export default function Partners() {
         await axios.post('/api/partners', { name, fullName });
         toast.success(t('partners.addSuccess'));
       } else {
-        await axios.put(`/api/partners/${currentId}`, { name, fullName, status: 'Đang hoạt động' });
+        await axios.put(`/api/partners/${currentId}`, { name, fullName, status: 'ﾄ紳ng ho蘯｡t ﾄ黛ｻ冢g' });
         toast.success(t('partners.updateSuccess'));
       }
       setIsModalOpen(false);
       fetchPartners();
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Có lỗi xảy ra!');
+      toast.error(error.response?.data?.message || 'Cﾃｳ l盻擁 x蘯｣y ra!');
     }
   };
 
@@ -133,9 +133,9 @@ export default function Partners() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">◁E/div>
+        <div className="dot"></div>
         <span>{t('sidebar.categories')}</span>
-        <div className="dot">◁E/div>
+        <div className="dot"></div>
         <span>{t('sidebar.partners')}</span>
       </div>
       
@@ -151,7 +151,7 @@ export default function Partners() {
         />
       )}
 
-      {/* Modal Thêm/Sửa */}
+      {/* Modal Thﾃｪm/S盻ｭa */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
@@ -186,4 +186,6 @@ export default function Partners() {
     </AdminLayout>
   );
 }
+
+
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import AdminLayout from '../layouts/AdminLayout';
 import GridTable from '../components/GridTable';
 import Modal from '../components/Modal';
@@ -49,20 +49,20 @@ export default function Roles() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!name) return toast.error(t('roles.missingInfo') || 'Vui lòng điền tên vai trò');
+    if (!name) return toast.error(t('roles.missingInfo') || 'Vui lﾃｲng ﾄ訴盻］ tﾃｪn vai trﾃｲ');
 
     try {
       if (modalMode === 'add') {
         await axios.post('/api/roles', { name });
         toast.success(t('roles.addSuccess'));
       } else {
-        await axios.put(`/api/roles/${currentId}`, { name, status: 'Đang hoạt động' });
+        await axios.put(`/api/roles/${currentId}`, { name, status: 'ﾄ紳ng ho蘯｡t ﾄ黛ｻ冢g' });
         toast.success(t('roles.updateSuccess'));
       }
       setIsModalOpen(false);
       fetchData();
     } catch (error) {
-      toast.error('Lỗi khi lưu dữ liệu');
+      toast.error('L盻擁 khi lﾆｰu d盻ｯ li盻㎡');
     }
   };
 
@@ -119,9 +119,9 @@ export default function Roles() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">◁E/div>
+        <div className="dot"></div>
         <span>{t('sidebar.system')}</span>
-        <div className="dot">◁E/div>
+        <div className="dot"></div>
         <span>{t('sidebar.roles')}</span>
       </div>
       
@@ -148,4 +148,6 @@ export default function Roles() {
     </AdminLayout>
   );
 }
+
+
 

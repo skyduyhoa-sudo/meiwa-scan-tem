@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import AdminLayout from '../layouts/AdminLayout';
 import GridTable from '../components/GridTable';
 import Modal from '../components/Modal';
@@ -23,7 +23,7 @@ export default function PackingList() {
       const response = await axios.get('/api/packing-list');
       setData(response.data);
     } catch (error) {
-      toast.error('Lỗi khi tải danh sách Packing List');
+      toast.error('L盻擁 khi t蘯｣i danh sﾃ｡ch Packing List');
     } finally {
       setLoading(false);
     }
@@ -42,7 +42,7 @@ export default function PackingList() {
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!selectedFile) {
-      toast.error('Vui lòng chọn file đềEimport!');
+      toast.error('Vui lﾃｲng ch盻肱 file ﾄ黛ｻ・import!');
       return;
     }
 
@@ -54,31 +54,31 @@ export default function PackingList() {
       const response = await axios.post('/api/documents/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      toast.success(response.data.message || 'Import dữ liệu thành công!');
+      toast.success(response.data.message || 'Import d盻ｯ li盻㎡ thﾃnh cﾃｴng!');
       setIsImportModalOpen(false);
       setSelectedFile(null);
       fetchPackingList(); // Reload table
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Lỗi khi import file!');
+      toast.error(error.response?.data?.message || 'L盻擁 khi import file!');
     } finally {
       setIsUploading(false);
     }
   };
 
   const handleExport = () => {
-    if (data.length === 0) return toast.warn('Không có dữ liệu đềExuất');
+    if (data.length === 0) return toast.warn('Khﾃｴng cﾃｳ d盻ｯ li盻㎡ ﾄ黛ｻ・xu蘯･t');
     
     const exportData = data.map(item => ({
-      'Ngày đóng gói': item.packDate,
-      'SềEBox': item.boxNo,
-      'Mã Lô': item.lotNo,
-      'Mã SP': item.code,
+      'Ngﾃy ﾄ妥ｳng gﾃｳi': item.packDate,
+      'S盻・Box': item.boxNo,
+      'Mﾃ｣ Lﾃｴ': item.lotNo,
+      'Mﾃ｣ SP': item.code,
       'Item': item.item,
-      'Hạng': item.rank,
-      'SềElượng': item.quantity,
-      'Tổng': item.total,
-      'Bảo hành': item.warrantyPeriod,
-      'SềESeri': item.seriNumber || '',
+      'H蘯｡ng': item.rank,
+      'S盻・lﾆｰ盻｣ng': item.quantity,
+      'T盻貧g': item.total,
+      'B蘯｣o hﾃnh': item.warrantyPeriod,
+      'S盻・Seri': item.seriNumber || '',
       'PO No': item.poNumber || ''
     }));
 
@@ -137,9 +137,9 @@ export default function PackingList() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">◁E/div>
+        <div className="dot"></div>
         <span>{t('sidebar.operations')}</span>
-        <div className="dot">◁E/div>
+        <div className="dot"></div>
         <span>{t('packingList.title')}</span>
       </div>
       
@@ -160,13 +160,13 @@ export default function PackingList() {
       <Modal 
         isOpen={isImportModalOpen} 
         onClose={() => !isUploading && setIsImportModalOpen(false)}
-        title="Import Dữ Liệu Đa Định Dạng"
+        title="Import D盻ｯ Li盻㎡ ﾄ紳 ﾄ雪ｻ杵h D蘯｡ng"
       >
         <form onSubmit={handleUpload}>
           <div style={{ padding: '20px', border: '2px dashed #ccc', textAlign: 'center', marginBottom: '20px', borderRadius: '8px' }}>
             <Upload size={40} color="#ccc" style={{ marginBottom: '10px' }} />
-            <p>Kéo thả file vào đây hoặc nhấn đềEchọn file</p>
-            <p style={{ fontSize: '12px', color: '#666' }}>HềEtrợ: .xlsx, .csv, .pdf, .docx, .png, .jpg</p>
+            <p>Kﾃｩo th蘯｣ file vﾃo ﾄ妥｢y ho蘯ｷc nh蘯･n ﾄ黛ｻ・ch盻肱 file</p>
+            <p style={{ fontSize: '12px', color: '#666' }}>H盻・tr盻｣: .xlsx, .csv, .pdf, .docx, .png, .jpg</p>
             <input 
               type="file" 
               accept=".xlsx,.xls,.csv,.pdf,.docx,.png,.jpg,.jpeg"
@@ -177,14 +177,14 @@ export default function PackingList() {
 
           {isUploading && (
             <div style={{ textAlign: 'center', marginBottom: '15px', color: '#32c5d2', fontWeight: 'bold' }}>
-              Đang xử lý tài liệu (OCR / Parse)... Vui lòng đợi.
+              ﾄ紳ng x盻ｭ lﾃｽ tﾃi li盻㎡ (OCR / Parse)... Vui lﾃｲng ﾄ黛ｻ｣i.
             </div>
           )}
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-            <button type="button" className="btn" onClick={() => setIsImportModalOpen(false)} disabled={isUploading}>Hủy</button>
+            <button type="button" className="btn" onClick={() => setIsImportModalOpen(false)} disabled={isUploading}>H盻ｧy</button>
             <button type="submit" className="btn green" disabled={isUploading || !selectedFile}>
-              {isUploading ? 'Đang Import...' : 'Import ngay'}
+              {isUploading ? 'ﾄ紳ng Import...' : 'Import ngay'}
             </button>
           </div>
         </form>
@@ -193,4 +193,6 @@ export default function PackingList() {
     </AdminLayout>
   );
 }
+
+
 
