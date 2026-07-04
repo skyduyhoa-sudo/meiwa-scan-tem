@@ -554,6 +554,14 @@ app.post('/api/documents/upload', upload.single('file'), async (req, res) => {
   }
 });
 
+// Cấu hình phục vụ giao diện tĩnh (Frontend React)
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Catch-all route: trả về index.html cho các route không phải API (dành cho React Router)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`Backend server is running on http://localhost:${PORT}`);
+  console.log(`Backend server is running on port ${PORT}`);
 });

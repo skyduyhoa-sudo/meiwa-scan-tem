@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: meiwa-scan-tem
+    env: node
+    buildCommand: npm install && npm run build && cd backend && npm install && npx prisma generate
+    startCommand: cd backend && node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        value: meiwa-super-secret-key-prod

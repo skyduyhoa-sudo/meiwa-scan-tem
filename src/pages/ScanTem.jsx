@@ -24,13 +24,13 @@ export default function ScanTem() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/packing-list');
+      const response = await axios.get('/api/packing-list');
       setData(response.data);
 
-      const pResponse = await axios.get('http://localhost:5000/api/partners');
+      const pResponse = await axios.get('/api/partners');
       setPartners(pResponse.data);
 
-      const prResponse = await axios.get('http://localhost:5000/api/products');
+      const prResponse = await axios.get('/api/products');
       setProducts(prResponse.data);
     } catch (error) {
       toast.error('Lỗi khi tải dữ liệu đối chiếu');
@@ -41,8 +41,7 @@ export default function ScanTem() {
     fetchData();
   }, []);
 
-  // Luôn auto-focus vào ô input khi Modal Scan đang mở
-  useEffect(() => {
+  // Luôn auto-focus vào ô input khi Modal Scan đang mềE  useEffect(() => {
     let interval;
     if (isScanModalOpen) {
       inputRef.current?.focus();
@@ -66,7 +65,7 @@ export default function ScanTem() {
     setBarcode(''); // Clear input for next scan immediately
 
     try {
-      const response = await axios.post('http://localhost:5000/api/scan/verify', { barcode: scannedCode });
+      const response = await axios.post('/api/scan/verify', { barcode: scannedCode });
       const { success, message, errors } = response.data;
 
       const result = {
@@ -186,9 +185,9 @@ export default function ScanTem() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.operations')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.scanTem')}</span>
       </div>
       
@@ -257,7 +256,7 @@ export default function ScanTem() {
               </button>
             </div>
 
-            {/* Ô vuông xanh (Khung quét) */}
+            {/* ÁEvuông xanh (Khung quét) */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
               <div style={{ 
                 width: '250px', height: '250px', 
@@ -313,3 +312,4 @@ export default function ScanTem() {
     </AdminLayout>
   );
 }
+

@@ -48,7 +48,7 @@ export default function AdminLayout({ children }) {
     
     try {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const res = await axios.post('http://localhost:5000/api/change-password', {
+      const res = await axios.post('/api/change-password', {
         username: user.username,
         oldPassword: pwdForm.oldPassword,
         newPassword: pwdForm.newPassword
@@ -68,7 +68,7 @@ export default function AdminLayout({ children }) {
     e.preventDefault();
     try {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const res = await axios.post('http://localhost:5000/api/update-profile', {
+      const res = await axios.post('/api/update-profile', {
         username: user.username,
         firstName: profileForm.firstName,
         lastName: profileForm.lastName,
@@ -221,7 +221,7 @@ export default function AdminLayout({ children }) {
                 <div className="user-dropdown">
                   <div className="dropdown-header" style={{ padding: '12px 15px', borderBottom: '1px solid #eee', backgroundColor: '#f8f9fa', borderTopLeftRadius: '6px', borderTopRightRadius: '6px' }}>
                     <div style={{ fontWeight: '600', color: '#333', fontSize: '14px' }}>{displayName}</div>
-                    <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>Quản trị viên</div>
+                    <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>Quản trềEviên</div>
                   </div>
                   <div className="dropdown-item" onClick={() => { setIsProfileModalOpen(true); setUserMenuOpen(false); }} style={{ marginTop: '5px' }}>
                     <User size={15} style={{ color: '#32c5d2' }}/> <span style={{ fontWeight: '500' }}>{t('header.profile')}</span>
@@ -321,7 +321,7 @@ export default function AdminLayout({ children }) {
             <div style={{ display: 'flex', gap: '20px', marginBottom: '15px' }}>
               <div style={{ flex: 1 }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500', fontSize: '13px', color: '#555' }}>
-                  Họ tên lót <span style={{ color: 'red' }}>*</span>
+                  HềEtên lót <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input 
                   type="text" 
@@ -382,7 +382,7 @@ export default function AdminLayout({ children }) {
               </label>
               <div style={{ border: '1px solid #3498db', borderRadius: '4px', overflow: 'hidden' }}>
                 <div style={{ backgroundColor: '#3498db', color: '#fff', padding: '10px 15px', fontSize: '13px', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between' }}>
-                  <span><i className="fa fa-paperclip"></i> TỆP ĐÍNH KÈM</span>
+                  <span><i className="fa fa-paperclip"></i> TềE ĐÍNH KÁE</span>
                   <ChevronDown size={14} />
                 </div>
                 <div style={{ padding: '15px', backgroundColor: '#f9f9f9' }}>
@@ -407,11 +407,10 @@ export default function AdminLayout({ children }) {
                     </button>
                     {profileForm.avatar && (
                       <div style={{ marginBottom: '10px', color: '#32c5d2', fontSize: '13px', fontWeight: 'bold' }}>
-                        Đã chọn 1 tệp ✓
-                      </div>
+                        Đã chọn 1 tệp ✁E                      </div>
                     )}
                     <p style={{ color: '#888', fontSize: '12px', margin: 0 }}>
-                      — Bạn chỉ có thể tải lên tệp có định dạng <i>Ảnh (jpg, png, jpeg)</i> và kích thước không quá <i>10MB</i>
+                       EBạn chềEcó thềEtải lên tệp có định dạng <i>Ảnh (jpg, png, jpeg)</i> và kích thước không quá <i>10MB</i>
                     </p>
                   </div>
                 </div>
@@ -456,3 +455,4 @@ export default function AdminLayout({ children }) {
     </div>
   );
 }
+

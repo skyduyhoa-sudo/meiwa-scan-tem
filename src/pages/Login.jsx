@@ -16,7 +16,7 @@ export default function Login() {
     
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { username, password });
+      const response = await axios.post('/api/login', { username, password });
       
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
@@ -43,7 +43,7 @@ export default function Login() {
       <div className="login-card">
         <div className="login-header">
           <h2>MEIWA SCAN TEM</h2>
-          <p>Hệ thống Quản lý Đối chiếu Hàng hóa</p>
+          <p>HềEthống Quản lý Đối chiếu Hàng hóa</p>
         </div>
         <form className="login-form" onSubmit={handleLogin}>
           <div className="form-group">
@@ -74,3 +74,4 @@ export default function Login() {
     </div>
   );
 }
+

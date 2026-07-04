@@ -21,7 +21,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/dashboard/stats');
+        const response = await axios.get('/api/dashboard/stats');
         if (response.data.success) {
           setStats(response.data.data);
         }
@@ -122,3 +122,4 @@ export default function Dashboard() {
     </AdminLayout>
   );
 }
+

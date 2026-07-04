@@ -23,7 +23,7 @@ export default function Partners() {
 
   const fetchPartners = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/partners');
+      const response = await axios.get('/api/partners');
       setData(response.data);
     } catch (error) {
       toast.error(t('common.errorFetch'));
@@ -60,10 +60,10 @@ export default function Partners() {
 
     try {
       if (modalMode === 'add') {
-        await axios.post('http://localhost:5000/api/partners', { name, fullName });
+        await axios.post('/api/partners', { name, fullName });
         toast.success(t('partners.addSuccess'));
       } else {
-        await axios.put(`http://localhost:5000/api/partners/${currentId}`, { name, fullName, status: 'Đang hoạt động' });
+        await axios.put(`/api/partners/${currentId}`, { name, fullName, status: 'Đang hoạt động' });
         toast.success(t('partners.updateSuccess'));
       }
       setIsModalOpen(false);
@@ -76,7 +76,7 @@ export default function Partners() {
   const handleDelete = async (id) => {
     if (window.confirm(t('common.confirmDelete'))) {
       try {
-        await axios.delete(`http://localhost:5000/api/partners/${id}`);
+        await axios.delete(`/api/partners/${id}`);
         toast.success(t('partners.deleteSuccess'));
         fetchPartners();
       } catch (error) {
@@ -133,9 +133,9 @@ export default function Partners() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.categories')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.partners')}</span>
       </div>
       
@@ -186,3 +186,4 @@ export default function Partners() {
     </AdminLayout>
   );
 }
+

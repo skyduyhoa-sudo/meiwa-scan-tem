@@ -13,7 +13,7 @@ import Roles from './pages/Roles';
 import Accounts from './pages/Accounts';
 import Logs from './pages/Logs';
 
-// PrivateRoute để bảo vệ các trang yêu cầu đăng nhập
+// PrivateRoute đềEbảo vềEcác trang yêu cầu đăng nhập
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   return token ? children : <Navigate to="/login" replace />;
@@ -43,3 +43,4 @@ function App() {
 }
 
 export default App;
+

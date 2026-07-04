@@ -23,7 +23,7 @@ export default function ReferenceDocs() {
     setLoading(true);
     try {
       const endpoint = activeTab === 'invoice' ? '/api/invoices' : '/api/process-docs';
-      const response = await axios.get(`http://localhost:5000${endpoint}`);
+      const response = await axios.get(`${endpoint}`);
       setData(response.data);
     } catch (error) {
       toast.error(t('common.errorFetch'));
@@ -45,7 +45,7 @@ export default function ReferenceDocs() {
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!selectedFile) {
-      toast.error('Vui lòng chọn file để import!');
+      toast.error('Vui lòng chọn file đềEimport!');
       return;
     }
 
@@ -55,7 +55,7 @@ export default function ReferenceDocs() {
 
     setIsUploading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/documents/upload', formData, {
+      const response = await axios.post('/api/documents/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       toast.success(response.data.message || 'Import dữ liệu thành công!');
@@ -111,9 +111,9 @@ export default function ReferenceDocs() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.operations')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.referenceDocs')}</span>
       </div>
       
@@ -155,8 +155,8 @@ export default function ReferenceDocs() {
         <form onSubmit={handleUpload}>
           <div style={{ padding: '20px', border: '2px dashed #ccc', textAlign: 'center', marginBottom: '20px', borderRadius: '8px' }}>
             <Upload size={40} color="#ccc" style={{ marginBottom: '10px' }} />
-            <p>Kéo thả file vào đây hoặc nhấn để chọn file</p>
-            <p style={{ fontSize: '12px', color: '#666' }}>Hỗ trợ: .xlsx, .csv, .pdf, .docx, .png, .jpg</p>
+            <p>Kéo thả file vào đây hoặc nhấn đềEchọn file</p>
+            <p style={{ fontSize: '12px', color: '#666' }}>HềEtrợ: .xlsx, .csv, .pdf, .docx, .png, .jpg</p>
             <input 
               type="file" 
               accept=".xlsx,.xls,.csv,.pdf,.docx,.png,.jpg,.jpeg"
@@ -183,3 +183,4 @@ export default function ReferenceDocs() {
     </AdminLayout>
   );
 }
+

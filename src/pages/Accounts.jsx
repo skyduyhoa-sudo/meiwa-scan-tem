@@ -26,7 +26,7 @@ export default function Accounts() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/accounts');
+      const response = await axios.get('/api/accounts');
       setData(response.data);
     } catch (error) {
       toast.error(t('common.errorFetch'));
@@ -37,7 +37,7 @@ export default function Accounts() {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/roles');
+      const response = await axios.get('/api/roles');
       setRoles(response.data);
     } catch (error) {
       console.error(error);
@@ -63,7 +63,7 @@ export default function Accounts() {
     setModalMode('edit');
     setCurrentId(account.id);
     setUsername(account.username);
-    setPassword(''); // Không hiển thị password cũ
+    setPassword(''); // Không hiển thềEpassword cũ
     setFirstName(account.firstName);
     setLastName(account.lastName);
     setRoleId(account.roleId);
@@ -77,10 +77,10 @@ export default function Accounts() {
     try {
       if (modalMode === 'add') {
         if (!password) return toast.error('Vui lòng nhập mật khẩu');
-        await axios.post('http://localhost:5000/api/accounts', { username, password, firstName, lastName, roleId });
+        await axios.post('/api/accounts', { username, password, firstName, lastName, roleId });
         toast.success(t('accounts.addSuccess'));
       } else {
-        await axios.put(`http://localhost:5000/api/accounts/${currentId}`, { username, firstName, lastName, roleId, status: 'Đang hoạt động' });
+        await axios.put(`/api/accounts/${currentId}`, { username, firstName, lastName, roleId, status: 'Đang hoạt động' });
         toast.success(t('accounts.updateSuccess'));
       }
       setIsModalOpen(false);
@@ -93,7 +93,7 @@ export default function Accounts() {
   const handleDelete = async (id) => {
     if (window.confirm(t('common.confirmDelete'))) {
       try {
-        await axios.delete(`http://localhost:5000/api/accounts/${id}`);
+        await axios.delete(`/api/accounts/${id}`);
         toast.success(t('accounts.deleteSuccess'));
         fetchData();
       } catch (error) {
@@ -153,9 +153,9 @@ export default function Accounts() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.system')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.accounts')}</span>
       </div>
       
@@ -206,3 +206,4 @@ export default function Accounts() {
     </AdminLayout>
   );
 }
+

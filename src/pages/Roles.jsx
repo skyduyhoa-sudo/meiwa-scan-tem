@@ -21,7 +21,7 @@ export default function Roles() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/roles');
+      const response = await axios.get('/api/roles');
       setData(response.data);
     } catch (error) {
       toast.error(t('common.errorFetch'));
@@ -53,10 +53,10 @@ export default function Roles() {
 
     try {
       if (modalMode === 'add') {
-        await axios.post('http://localhost:5000/api/roles', { name });
+        await axios.post('/api/roles', { name });
         toast.success(t('roles.addSuccess'));
       } else {
-        await axios.put(`http://localhost:5000/api/roles/${currentId}`, { name, status: 'Đang hoạt động' });
+        await axios.put(`/api/roles/${currentId}`, { name, status: 'Đang hoạt động' });
         toast.success(t('roles.updateSuccess'));
       }
       setIsModalOpen(false);
@@ -69,7 +69,7 @@ export default function Roles() {
   const handleDelete = async (id) => {
     if (window.confirm(t('common.confirmDelete'))) {
       try {
-        await axios.delete(`http://localhost:5000/api/roles/${id}`);
+        await axios.delete(`/api/roles/${id}`);
         toast.success(t('roles.deleteSuccess'));
         fetchData();
       } catch (error) {
@@ -119,9 +119,9 @@ export default function Roles() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.system')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.roles')}</span>
       </div>
       
@@ -148,3 +148,4 @@ export default function Roles() {
     </AdminLayout>
   );
 }
+

@@ -25,7 +25,7 @@ export default function Products() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/products');
+      const response = await axios.get('/api/products');
       setData(response.data);
     } catch (error) {
       toast.error(t('common.errorFetch'));
@@ -36,7 +36,7 @@ export default function Products() {
 
   const fetchPartners = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/partners');
+      const response = await axios.get('/api/partners');
       setPartners(response.data);
     } catch (error) {
       console.error('Error fetching partners', error);
@@ -74,10 +74,10 @@ export default function Products() {
 
     try {
       if (modalMode === 'add') {
-        await axios.post('http://localhost:5000/api/products', { name, code, partnerId });
+        await axios.post('/api/products', { name, code, partnerId });
         toast.success(t('products.addSuccess'));
       } else {
-        await axios.put(`http://localhost:5000/api/products/${currentId}`, { name, code, partnerId, status: 'Đang hoạt động' });
+        await axios.put(`/api/products/${currentId}`, { name, code, partnerId, status: 'Đang hoạt động' });
         toast.success(t('products.updateSuccess'));
       }
       setIsModalOpen(false);
@@ -90,7 +90,7 @@ export default function Products() {
   const handleDelete = async (id) => {
     if (window.confirm(t('common.confirmDelete'))) {
       try {
-        await axios.delete(`http://localhost:5000/api/products/${id}`);
+        await axios.delete(`/api/products/${id}`);
         toast.success(t('products.deleteSuccess'));
         fetchProducts();
       } catch (error) {
@@ -142,9 +142,9 @@ export default function Products() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.categories')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.products')}</span>
       </div>
       
@@ -208,3 +208,4 @@ export default function Products() {
     </AdminLayout>
   );
 }
+

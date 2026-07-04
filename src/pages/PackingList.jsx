@@ -20,7 +20,7 @@ export default function PackingList() {
 
   const fetchPackingList = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/packing-list');
+      const response = await axios.get('/api/packing-list');
       setData(response.data);
     } catch (error) {
       toast.error('Lỗi khi tải danh sách Packing List');
@@ -42,7 +42,7 @@ export default function PackingList() {
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!selectedFile) {
-      toast.error('Vui lòng chọn file để import!');
+      toast.error('Vui lòng chọn file đềEimport!');
       return;
     }
 
@@ -51,7 +51,7 @@ export default function PackingList() {
 
     setIsUploading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/documents/upload', formData, {
+      const response = await axios.post('/api/documents/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       toast.success(response.data.message || 'Import dữ liệu thành công!');
@@ -66,19 +66,19 @@ export default function PackingList() {
   };
 
   const handleExport = () => {
-    if (data.length === 0) return toast.warn('Không có dữ liệu để xuất');
+    if (data.length === 0) return toast.warn('Không có dữ liệu đềExuất');
     
     const exportData = data.map(item => ({
       'Ngày đóng gói': item.packDate,
-      'Số Box': item.boxNo,
+      'SềEBox': item.boxNo,
       'Mã Lô': item.lotNo,
       'Mã SP': item.code,
       'Item': item.item,
       'Hạng': item.rank,
-      'Số lượng': item.quantity,
+      'SềElượng': item.quantity,
       'Tổng': item.total,
       'Bảo hành': item.warrantyPeriod,
-      'Số Seri': item.seriNumber || '',
+      'SềESeri': item.seriNumber || '',
       'PO No': item.poNumber || ''
     }));
 
@@ -137,9 +137,9 @@ export default function PackingList() {
       <div className="breadcrumb">
         <Home size={14} />
         <span>{t('sidebar.dashboard')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('sidebar.operations')}</span>
-        <div className="dot">●</div>
+        <div className="dot">◁E/div>
         <span>{t('packingList.title')}</span>
       </div>
       
@@ -165,8 +165,8 @@ export default function PackingList() {
         <form onSubmit={handleUpload}>
           <div style={{ padding: '20px', border: '2px dashed #ccc', textAlign: 'center', marginBottom: '20px', borderRadius: '8px' }}>
             <Upload size={40} color="#ccc" style={{ marginBottom: '10px' }} />
-            <p>Kéo thả file vào đây hoặc nhấn để chọn file</p>
-            <p style={{ fontSize: '12px', color: '#666' }}>Hỗ trợ: .xlsx, .csv, .pdf, .docx, .png, .jpg</p>
+            <p>Kéo thả file vào đây hoặc nhấn đềEchọn file</p>
+            <p style={{ fontSize: '12px', color: '#666' }}>HềEtrợ: .xlsx, .csv, .pdf, .docx, .png, .jpg</p>
             <input 
               type="file" 
               accept=".xlsx,.xls,.csv,.pdf,.docx,.png,.jpg,.jpeg"
@@ -193,3 +193,4 @@ export default function PackingList() {
     </AdminLayout>
   );
 }
+
