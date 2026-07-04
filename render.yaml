@@ -2,7 +2,6 @@ services:
   - type: web
     name: meiwa-scan-tem
     env: node
-    plan: free
     buildCommand: npm install && npm run build && cd backend && npm install && npx prisma generate
     startCommand: cd backend && node server.js
     envVars:
