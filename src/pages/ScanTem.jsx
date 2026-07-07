@@ -61,7 +61,7 @@ export default function ScanTem() {
       html5QrCodeRef.current = html5QrCode;
 
       await html5QrCode.start(
-        { facingMode: "environment" }, // Camera sau
+        { facingMode: { exact: "environment" } }, // Bắt buộc dùng Camera sau
         {
           fps: 10,
           qrbox: function(viewfinderWidth, viewfinderHeight) {
@@ -172,28 +172,22 @@ export default function ScanTem() {
     gainNode.connect(audioContext.destination);
     
     if (type === 'ok') {
+      // Âm thanh Ping-Pong (Thành công)
       oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // Ping (Nốt Đô C5)
+      oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.15); // Pong (Nốt Mi E5)
       gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
       oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.15);
+      oscillator.stop(audioContext.currentTime + 0.3);
     } else {
-      oscillator.type = 'square';
-      oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+      // Âm thanh Pip (Lỗi) - 1 tiếng bíp ngắn, hơi chói tai để chú ý
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(350, audioContext.currentTime); 
       gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
       oscillator.start();
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-      setTimeout(() => {
-        const osc2 = audioContext.createOscillator();
-        const gain2 = audioContext.createGain();
-        osc2.type = 'square';
-        osc2.frequency.setValueAtTime(300, audioContext.currentTime);
-        osc2.connect(gain2);
-        gain2.connect(audioContext.destination);
-        osc2.start();
-        osc2.stop(audioContext.currentTime + 0.1);
-      }, 150);
-      oscillator.stop(audioContext.currentTime + 0.1);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+      oscillator.stop(audioContext.currentTime + 0.2);
     }
   };
 
