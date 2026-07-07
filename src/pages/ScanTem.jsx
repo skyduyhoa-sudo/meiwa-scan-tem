@@ -5,7 +5,7 @@ import { Home, Scan, CheckCircle, XCircle, Eye, Camera, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Html5QrcodeScanner, Html5Qrcode } from 'html5-qrcode';
+import { Html5QrcodeScanner, Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import './ScanTem.css';
 
 export default function ScanTem() {
@@ -50,14 +50,29 @@ export default function ScanTem() {
         await stopCamera();
       }
       
-      const html5QrCode = new Html5Qrcode(scannerContainerId);
+      const html5QrCode = new Html5Qrcode(scannerContainerId, {
+        formatsToSupport: [
+          Html5QrcodeSupportedFormats.QR_CODE,
+          Html5QrcodeSupportedFormats.DATA_MATRIX,
+          Html5QrcodeSupportedFormats.CODE_128,
+          Html5QrcodeSupportedFormats.CODE_39
+        ]
+      });
       html5QrCodeRef.current = html5QrCode;
 
       await html5QrCode.start(
         { facingMode: "environment" }, // Camera sau
         {
           fps: 10,
-          qrbox: { width: 250, height: 250 }
+          qrbox: function(viewfinderWidth, viewfinderHeight) {
+             const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+             const qrboxSize = Math.floor(minEdgeSize * 0.8);
+             return { width: qrboxSize, height: qrboxSize };
+          },
+          videoConstraints: {
+              width: { ideal: 1920 },
+              height: { ideal: 1080 }
+          }
         },
         onScanSuccess,
         onScanFailure
