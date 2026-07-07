@@ -79,7 +79,10 @@ export default function ScanTem() {
           Html5QrcodeSupportedFormats.DATA_MATRIX,
           Html5QrcodeSupportedFormats.CODE_128,
           Html5QrcodeSupportedFormats.CODE_39
-        ]
+        ],
+        experimentalFeatures: {
+          useBarCodeDetectorIfSupported: true
+        }
       });
       html5QrCodeRef.current = html5QrCode;
 
@@ -296,6 +299,24 @@ export default function ScanTem() {
                 <X size={24} />
               </button>
             </div>
+          </div>
+          
+          <div style={{ padding: '0 15px', marginBottom: '10px' }}>
+            <input 
+              type="text" 
+              placeholder="Hoặc bấm vào đây để dùng súng bắn mã USB..." 
+              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const val = e.target.value.trim();
+                  if (val) {
+                    onScanSuccess(val);
+                    e.target.value = '';
+                  }
+                }
+              }}
+              autoFocus
+            />
           </div>
 
           <div className="camera-container">
