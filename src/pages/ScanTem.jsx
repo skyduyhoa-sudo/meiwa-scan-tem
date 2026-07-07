@@ -282,30 +282,33 @@ export default function ScanTem() {
 
       {isScanModalOpen && (
         <div className="mobile-scan-overlay">
-          <div className="mobile-scan-header">
-            <select 
-              value={scanType} 
-              onChange={(e) => setScanType(e.target.value)}
-              className="scan-type-selector"
-            >
-              <option value="TEM_BICH">Quét Tem BỊCH</option>
-              <option value="TEM_THUNG">Quét Tem THÙNG</option>
-            </select>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button className="switch-cam-btn" onClick={switchCamera} style={{ background: '#3182ce', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '8px', fontWeight: 'bold' }}>
-                Đổi Camera
-              </button>
-              <button className="close-btn" onClick={() => setIsScanModalOpen(false)}>
-                <X size={24} />
-              </button>
+          <div className="mobile-scan-header" style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px', boxSizing: 'border-box', width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+              <select 
+                value={scanType} 
+                onChange={(e) => setScanType(e.target.value)}
+                className="scan-type-selector"
+                style={{ fontSize: '14px', padding: '6px', width: '60%' }}
+              >
+                <option value="TEM_BICH">Quét Tem BỊCH</option>
+                <option value="TEM_THUNG">Quét Tem THÙNG</option>
+              </select>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <button className="switch-cam-btn" onClick={switchCamera} style={{ background: '#3182ce', color: 'white', border: 'none', padding: '6px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '12px' }}>
+                  Đổi Camera
+                </button>
+                <button className="close-btn" onClick={() => setIsScanModalOpen(false)}>
+                  <X size={24} />
+                </button>
+              </div>
             </div>
           </div>
           
-          <div style={{ padding: '0 15px', marginBottom: '10px' }}>
+          <div style={{ padding: '0 10px', marginBottom: '10px', boxSizing: 'border-box', width: '100%' }}>
             <input 
               type="text" 
               placeholder="Hoặc bấm vào đây để dùng súng bắn mã USB..." 
-              style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }}
+              style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box', fontSize: '14px' }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   const val = e.target.value.trim();
