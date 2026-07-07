@@ -54,7 +54,7 @@
 }
 
 .nav-category {
-  padding: 15px 20px 5px 20px;
+  padding: 10px 20px 2px 20px;
   font-size: 11px;
   text-transform: uppercase;
   color: #90caf9;
@@ -66,8 +66,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 15px;
-  margin: 8px 15px;
+  padding: 8px 15px;
+  margin: 4px 15px;
   border-radius: 8px;
   color: #e3f2fd;
   background-color: #1976d2; /* Lighter, distinct blue */
