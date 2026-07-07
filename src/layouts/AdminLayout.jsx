@@ -8,7 +8,7 @@ import Modal from '../components/Modal';
 import './AdminLayout.css';
 
 export default function AdminLayout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -140,6 +140,9 @@ export default function AdminLayout({ children }) {
                   <Link 
                     to={item.path} 
                     className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                    onClick={() => {
+                      if (window.innerWidth <= 768) setSidebarOpen(false);
+                    }}
                   >
                     <item.icon size={18} />
                     <span>{item.title}</span>
