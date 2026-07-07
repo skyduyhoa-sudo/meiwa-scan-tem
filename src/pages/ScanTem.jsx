@@ -12,6 +12,8 @@ export default function ScanTem() {
   const [data, setData] = useState([]);
   const [isScanModalOpen, setIsScanModalOpen] = useState(false);
   const [scanType, setScanType] = useState('TEM_BICH'); // TEM_BICH, TEM_THUNG
+  const [cameras, setCameras] = useState([]);
+  const [activeCameraId, setActiveCameraId] = useState(null);
   
   // States cho quá trình scan
   const [history, setHistory] = useState([]);
@@ -44,7 +46,28 @@ export default function ScanTem() {
     return () => stopCamera();
   }, [isScanModalOpen]);
 
-  const startCamera = async () => {
+  const initCameras = async () => {
+    try {
+      const devices = await Html5Qrcode.getCameras();
+      if (devices && devices.length > 0) {
+        setCameras(devices);
+        let backCam = devices.find(c => 
+          c.label.toLowerCase().includes('back') || 
+          c.label.toLowerCase().includes('sau') || 
+          c.label.toLowerCase().includes('environment') ||
+          c.label.toLowerCase().includes('0')
+        );
+        let selectedId = backCam ? backCam.id : devices[devices.length - 1].id;
+        setActiveCameraId(selectedId);
+        return selectedId;
+      }
+    } catch (err) {
+      console.error("Lỗi lấy danh sách camera", err);
+    }
+    return null;
+  };
+
+  const startCamera = async (forceCameraId = null) => {
     try {
       if (html5QrCodeRef.current) {
         await stopCamera();
@@ -60,8 +83,15 @@ export default function ScanTem() {
       });
       html5QrCodeRef.current = html5QrCode;
 
+      let camId = forceCameraId || activeCameraId;
+      if (!camId) {
+        camId = await initCameras();
+      }
+
+      const cameraConfig = camId ? camId : { facingMode: "environment" };
+
       await html5QrCode.start(
-        { facingMode: { exact: "environment" } }, // Bắt buộc dùng Camera sau
+        cameraConfig,
         {
           fps: 10,
           qrbox: function(viewfinderWidth, viewfinderHeight) {
@@ -79,7 +109,19 @@ export default function ScanTem() {
       );
     } catch (err) {
       console.error("Camera error:", err);
-      toast.error("Không thể mở Camera. Vui lòng cấp quyền truy cập!");
+      toast.error("Không thể mở Camera. Vui lòng cấp quyền truy cập hoặc thử chuyển Camera!");
+    }
+  };
+
+  const switchCamera = () => {
+    if (cameras.length > 1) {
+      const currentIndex = cameras.findIndex(c => c.id === activeCameraId);
+      const nextIndex = (currentIndex + 1) % cameras.length;
+      const nextCamId = cameras[nextIndex].id;
+      setActiveCameraId(nextCamId);
+      startCamera(nextCamId);
+    } else {
+      toast.info("Thiết bị của bạn chỉ có 1 camera");
     }
   };
 
@@ -246,9 +288,14 @@ export default function ScanTem() {
               <option value="TEM_BICH">Quét Tem BỊCH</option>
               <option value="TEM_THUNG">Quét Tem THÙNG</option>
             </select>
-            <button className="close-btn" onClick={() => setIsScanModalOpen(false)}>
-              <X size={24} />
-            </button>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button className="switch-cam-btn" onClick={switchCamera} style={{ background: '#3182ce', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '8px', fontWeight: 'bold' }}>
+                Đổi Camera
+              </button>
+              <button className="close-btn" onClick={() => setIsScanModalOpen(false)}>
+                <X size={24} />
+              </button>
+            </div>
           </div>
 
           <div className="camera-container">
