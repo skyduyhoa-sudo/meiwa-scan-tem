@@ -280,4 +280,11 @@ body {
   .scan-dropdown-group {
     flex-direction: column !important;
   }
+  .page-title {
+    font-size: 20px !important;
+    margin-bottom: 15px !important;
+  }
+  .page-content {
+    padding: 15px !important;
+  }
 }
