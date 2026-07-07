@@ -217,58 +217,55 @@ app.get('/api/packing-list', async (req, res) => {
 // --- 5. SCAN AND VERIFY API ---
 app.post('/api/scan/verify', async (req, res) => {
   try {
-    const { barcode } = req.body;
-    // Giả định định dạng Barcode: Code|LotNo|Quantity|BoxNo|SerialNo
-    // Ví dụ: ME-1E|Q0309B|2400|29|SR-12345
-    const parts = barcode.split('|');
-    if (parts.length < 3) {
-      return res.status(400).json({ success: false, message: 'Mã vạch không đúng định dạng chuẩn!' });
+    const { barcode, stampType } = req.body;
+    // Format: Cust P/O / Cust P/N / Qty / Lot No / EXP. DATE / Customer Code / Unit / MAN. DATE / Serial Num
+    const parts = barcode.split('/');
+    if (parts.length < 9) {
+      return res.status(400).json({ success: false, message: 'Mã vạch không đúng định dạng chuẩn 9 trường dữ liệu!' });
     }
 
-    const code = parts[0]?.trim();
-    const lotNo = parts[1]?.trim();
+    const poNumber = parts[0]?.trim();
+    const custPN = parts[1]?.trim(); 
     const quantity = parseInt(parts[2]?.trim() || '0');
-    const boxNo = parts[3]?.trim();
-    const seriNumber = parts[4]?.trim();
+    const lotNo = parts[3]?.trim();
+    const expDate = parts[4]?.trim();
+    const customerCode = parts[5]?.trim();
+    const unit = parts[6]?.trim();
+    const packDate = parts[7]?.trim();
+    const seriNumber = parts[8]?.trim();
 
     const errors = [];
 
-    // 1. Kiểm tra Packing List (Đối chiếu toàn diện)
-    let packingQuery = { code, lotNo, quantity };
-    if (boxNo) packingQuery.boxNo = boxNo;
-    // Tạm bỏ qua seriNumber nếu Packing List mẫu không có để tránh lỗi POC, nhưng có thể thêm vào logic
-    const packMatch = await prisma.packingList.findFirst({ where: packingQuery });
+    // 1. Kiểm tra trùng lặp
+    const existingScan = await prisma.scanHistory.findFirst({ where: { barcode, status: 'OK' } });
+    if (existingScan) {
+      return res.status(200).json({ success: false, message: 'NG - TEM ĐÃ QUÉT', errors: ['Lỗi: Tem này đã được quét hợp lệ trước đó.'] });
+    }
+
+    // 2. Đối chiếu với LotDetail
+    const lotMatch = await prisma.lotDetail.findFirst({ where: { lotNo } });
     
-    if (!packMatch) {
-      errors.push(`Packing List: Không tìm thấy thùng hàng khớp (Code: ${code}, Lot: ${lotNo}, Qty: ${quantity}, Box: ${boxNo || 'N/A'})`);
-    } else if (seriNumber && packMatch.seriNumber && packMatch.seriNumber !== seriNumber) {
-      errors.push(`Packing List: Lệch số Seri (Thực tế: ${seriNumber} - Packing: ${packMatch.seriNumber})`);
-    }
-
-    // 2. Kiểm tra Invoice (Đối chiếu Số lượng)
-    const invoiceMatch = await prisma.invoice.findFirst({ where: { code } });
-    if (!invoiceMatch) {
-      errors.push(`Invoice: Không tìm thấy sản phẩm ${code} trong hóa đơn.`);
-    }
-
-    // 3. Kiểm tra Truyền phiếu ProcessDoc (Đối chiếu Lô)
-    const processMatch = await prisma.processDoc.findFirst({ where: { code, lotNo } });
-    if (!processMatch) {
-      errors.push(`Truyền phiếu: Không tìm thấy Lô ${lotNo} cho sản phẩm ${code}.`);
+    if (!lotMatch) {
+      errors.push(`Không tìm thấy Lot ${lotNo} trong hệ thống dữ liệu xuất hàng.`);
+    } else {
+      if (lotMatch.quantity !== quantity) errors.push(`Sai số lượng (Thực tế quét: ${quantity} - Chứng từ: ${lotMatch.quantity})`);
+      if (lotMatch.poNumber && lotMatch.poNumber !== poNumber) errors.push(`Sai mã PO (Thực tế: ${poNumber} - Chứng từ: ${lotMatch.poNumber})`);
+      // Tùy theo dữ liệu khách import để đối chiếu thêm các trường...
     }
 
     const isOk = errors.length === 0;
 
-    // Lưu Log Quét Tem
-    await prisma.log.create({ 
-      data: { 
-        type: isOk ? 'INFO' : 'ERROR', 
-        message: `Quét mã: ${barcode} -> ${isOk ? 'HỢP LỆ (CHO XUẤT)' : 'LỖI: ' + errors.join('; ')}` 
-      } 
+    await prisma.scanHistory.create({
+      data: {
+        barcode,
+        scanType: stampType || 'TEM_BICH',
+        status: isOk ? 'OK' : 'NG',
+        reason: isOk ? null : errors.join('; ')
+      }
     });
 
     if (isOk) {
-      res.json({ success: true, message: 'OK - CHO PHÉP XUẤT', data: { code, lotNo, boxNo } });
+      res.json({ success: true, message: 'OK - CHO PHÉP XUẤT', data: { lotNo, quantity, customerCode, seriNumber } });
     } else {
       res.status(200).json({ success: false, message: 'NG - KHÔNG ĐƯỢC XUẤT', errors });
     }
@@ -276,6 +273,42 @@ app.post('/api/scan/verify', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Lỗi hệ thống khi quét tem' });
+  }
+});
+
+// Cấu hình Multer upload đã có sẵn ở trên
+// --- 5.5. IMPORT EXCEL API ---
+app.post('/api/import', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Không tìm thấy file tải lên.' });
+    }
+    const workbook = xlsx.readFile(req.file.path);
+    const sheetName = workbook.SheetNames[0];
+    const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+    
+    // Giả định các cột Excel: LotNo, Quantity, PoNumber, CustomerCode, BoxNo...
+    let imported = 0;
+    for (const row of data) {
+      if (row.LotNo) {
+        await prisma.lotDetail.create({
+          data: {
+            lotNo: row.LotNo.toString(),
+            quantity: parseInt(row.Quantity || 0),
+            poNumber: row.PoNumber ? row.PoNumber.toString() : null,
+            customerCode: row.CustomerCode ? row.CustomerCode.toString() : null,
+            boxNo: row.BoxNo ? row.BoxNo.toString() : null
+          }
+        });
+        imported++;
+      }
+    }
+    // Xóa file tạm
+    fs.unlinkSync(req.file.path);
+    res.json({ success: true, message: `Đã import thành công ${imported} dòng dữ liệu Lot.` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Lỗi khi xử lý file Excel' });
   }
 });
 

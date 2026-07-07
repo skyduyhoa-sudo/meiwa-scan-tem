@@ -101,3 +101,32 @@ model Log {
   message   String
   createdAt DateTime @default(now())
 }
+
+model LotDetail {
+  id             Int      @id @default(autoincrement())
+  productName    String?
+  meiwaCode      String?
+  customerCode   String?
+  lotNo          String
+  quantity       Int
+  boxNo          String?
+  poNumber       String?
+  seriNumber     String?
+  packDate       String?
+  operator       String?
+  machineNo      String?
+  netWeight      Float?
+  grossWeight    Float?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ScanHistory {
+  id             Int      @id @default(autoincrement())
+  barcode        String
+  cartonNo       String?
+  scanType       String   // TEM_BICH, TEM_THUNG
+  status         String   // OK, NG
+  reason         String?
+  createdAt      DateTime @default(now())
+}

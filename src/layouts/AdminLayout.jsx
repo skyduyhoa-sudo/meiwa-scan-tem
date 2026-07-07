@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Menu, ChevronDown, Home, List, Package, Scan, Settings, User, Shield, LogOut, Key, Users, FileText, Save, X } from 'lucide-react';
+import { Menu, ChevronDown, Home, List, Package, Scan, Settings, User, Shield, LogOut, Key, Users, FileText, Save, X, UploadCloud } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
@@ -110,6 +110,7 @@ export default function AdminLayout({ children }) {
     { title: t('sidebar.operations'), isCategory: true },
     { title: t('sidebar.packingList'), icon: FileText, path: '/packing-list', hidden: isWorker },
     { title: t('sidebar.referenceDocs'), icon: FileText, path: '/reference-docs', hidden: isWorker },
+    { title: t('sidebar.importData', { defaultValue: 'Import Dữ Liệu' }), icon: UploadCloud, path: '/import-data', hidden: isWorker },
     { title: t('sidebar.scanTem'), icon: Scan, path: '/scan-tem' },
     { title: t('sidebar.system'), isCategory: true, hidden: isWorker },
     { title: t('sidebar.roles'), icon: Shield, path: '/roles', hidden: isWorker },

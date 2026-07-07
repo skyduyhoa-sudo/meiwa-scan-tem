@@ -12,6 +12,7 @@ import ScanTem from './pages/ScanTem';
 import Roles from './pages/Roles';
 import Accounts from './pages/Accounts';
 import Logs from './pages/Logs';
+import ImportData from './pages/ImportData';
 
 // PrivateRoute đềEbảo vềEcác trang yêu cầu đăng nhập
 const PrivateRoute = ({ children }) => {
@@ -35,6 +36,7 @@ function App() {
           <Route path="/roles" element={<PrivateRoute><Roles /></PrivateRoute>} />
           <Route path="/accounts" element={<PrivateRoute><Accounts /></PrivateRoute>} />
           <Route path="/logs" element={<PrivateRoute><Logs /></PrivateRoute>} />
+          <Route path="/import-data" element={<PrivateRoute><ImportData /></PrivateRoute>} />
         </Routes>
       </Router>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
