@@ -37,6 +37,9 @@ export default function ScanTem() {
     fetchData();
   }, []);
 
+  const [cameras, setCameras] = useState([]);
+  const [activeCameraId, setActiveCameraId] = useState(localStorage.getItem('preferredCameraId') || null);
+
   useEffect(() => {
     if (isScanModalOpen) {
       startCamera();
@@ -46,7 +49,7 @@ export default function ScanTem() {
     return () => stopCamera();
   }, [isScanModalOpen]);
 
-  const startCamera = async () => {
+  const startCamera = async (forceCameraId = null) => {
     try {
       if (html5QrCodeRef.current) {
         await stopCamera();
@@ -65,25 +68,31 @@ export default function ScanTem() {
       });
       html5QrCodeRef.current = html5QrCode;
 
-      let bestCameraId = null;
-      try {
-        const devices = await Html5Qrcode.getCameras();
-        if (devices && devices.length > 0) {
-          // Find back camera by common labels
-          const backCam = devices.find(c => 
-            c.label.toLowerCase().includes('back') || 
-            c.label.toLowerCase().includes('sau') || 
-            c.label.toLowerCase().includes('environment') ||
-            c.label.toLowerCase().includes('0')
-          );
-          // If no back camera found, fallback to the last camera in the list (usually the back camera on Android)
-          bestCameraId = backCam ? backCam.id : devices[devices.length - 1].id;
+      let devices = cameras;
+      if (devices.length === 0) {
+        try {
+          const fetchedDevices = await Html5Qrcode.getCameras();
+          if (fetchedDevices && fetchedDevices.length > 0) {
+            setCameras(fetchedDevices);
+            devices = fetchedDevices;
+          }
+        } catch (err) {
+          console.error("Lỗi lấy danh sách camera", err);
         }
-      } catch (err) {
-        console.error("Lỗi lấy danh sách camera", err);
       }
 
-      const cameraConfig = bestCameraId ? { deviceId: { exact: bestCameraId } } : { facingMode: "environment" };
+      let camIdToUse = forceCameraId || activeCameraId;
+
+      if (!camIdToUse && devices.length > 0) {
+        const backCam = devices.find(c => 
+          c.label.toLowerCase().includes('back') || 
+          c.label.toLowerCase().includes('sau') || 
+          c.label.toLowerCase().includes('environment')
+        );
+        camIdToUse = backCam ? backCam.id : devices[devices.length - 1].id;
+      }
+
+      const cameraConfig = camIdToUse ? { deviceId: { exact: camIdToUse } } : { facingMode: "environment" };
 
       await html5QrCode.start(
         cameraConfig,
@@ -99,14 +108,29 @@ export default function ScanTem() {
         onScanSuccess,
         onScanFailure
       );
+
+      if (camIdToUse) {
+        localStorage.setItem('preferredCameraId', camIdToUse);
+        setActiveCameraId(camIdToUse);
+      }
     } catch (err) {
       console.error("Camera error:", err);
-      toast.error("Không thể mở Camera. Vui lòng cấp quyền truy cập!");
+      toast.error("Không thể mở Camera. Vui lòng cấp quyền hoặc Đổi Camera!");
     }
   };
 
-
-
+  const switchCamera = () => {
+    if (cameras.length > 1) {
+      const currentIndex = cameras.findIndex(c => c.id === activeCameraId);
+      const nextIndex = (currentIndex + 1) % cameras.length;
+      const nextCamId = cameras[nextIndex].id;
+      
+      toast.info(`Đang chuyển sang Camera thứ ${nextIndex + 1}...`);
+      startCamera(nextCamId);
+    } else {
+      toast.info("Thiết bị của bạn chỉ báo cáo 1 camera.");
+    }
+  };
   const stopCamera = async () => {
     if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
       try {
@@ -273,6 +297,9 @@ export default function ScanTem() {
                 <option value="TEM_THUNG">Quét Tem THÙNG</option>
               </select>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <button className="switch-cam-btn" onClick={switchCamera} style={{ background: '#3182ce', color: 'white', border: 'none', padding: '6px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '12px' }}>
+                  Đổi
+                </button>
                 <button className="close-btn" onClick={() => setIsScanModalOpen(false)}>
                   <X size={24} />
                 </button>
