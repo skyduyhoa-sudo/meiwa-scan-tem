@@ -46,10 +46,8 @@ export default function ScanTem() {
     return () => stopCamera();
   }, [isScanModalOpen]);
 
-  const [cameraMode, setCameraMode] = useState("environment");
-
   const initCameras = async () => {
-    // We no longer strictly need this for facingMode, but keep it for fallback info
+    // Keep this only for potential future fallback if needed
     try {
       const devices = await Html5Qrcode.getCameras();
       if (devices && devices.length > 0) {
@@ -83,53 +81,46 @@ export default function ScanTem() {
         await initCameras();
       }
 
-      const cameraConfig = forceCameraId ? forceCameraId : { facingMode: cameraMode };
-
-      await html5QrCode.start(
-        cameraConfig,
-        {
-          fps: 10,
-          qrbox: function(viewfinderWidth, viewfinderHeight) {
-             const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
-             const qrboxSize = Math.floor(minEdgeSize * 0.8);
-             return { width: qrboxSize, height: qrboxSize };
+      // Start with strict environment (back) camera
+      try {
+        await html5QrCode.start(
+          { facingMode: { exact: "environment" } },
+          {
+            fps: 10,
+            qrbox: function(viewfinderWidth, viewfinderHeight) {
+               const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+               const qrboxSize = Math.floor(minEdgeSize * 0.8);
+               return { width: qrboxSize, height: qrboxSize };
+            },
+            videoConstraints: { width: { ideal: 1920 }, height: { ideal: 1080 } }
           },
-          videoConstraints: {
-              width: { ideal: 1920 },
-              height: { ideal: 1080 }
-          }
-        },
-        onScanSuccess,
-        onScanFailure
-      );
+          onScanSuccess,
+          onScanFailure
+        );
+      } catch (exactErr) {
+        console.warn("Không thể mở camera sau bắt buộc, thử mở camera mặc định", exactErr);
+        // Fallback to any available camera (useful for PC webcams)
+        await html5QrCode.start(
+          { facingMode: "environment" },
+          {
+            fps: 10,
+            qrbox: function(viewfinderWidth, viewfinderHeight) {
+               const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+               const qrboxSize = Math.floor(minEdgeSize * 0.8);
+               return { width: qrboxSize, height: qrboxSize };
+            }
+          },
+          onScanSuccess,
+          onScanFailure
+        );
+      }
     } catch (err) {
       console.error("Camera error:", err);
-      toast.error("Không thể mở Camera. Vui lòng cấp quyền truy cập hoặc thử chuyển Camera!");
+      toast.error("Không thể mở Camera. Vui lòng cấp quyền truy cập!");
     }
   };
 
-  const switchCamera = () => {
-    if (cameras.length > 1 || cameras.length === 0) {
-      // Toggle facing mode
-      const nextMode = cameraMode === "environment" ? "user" : "environment";
-      setCameraMode(nextMode);
-      
-      // Stop and restart with new mode
-      if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
-        html5QrCodeRef.current.stop().then(() => {
-          html5QrCodeRef.current.clear();
-          // We must wait a tiny bit for the camera hardware to release before starting the other one
-          setTimeout(() => {
-            startCamera({ facingMode: nextMode });
-          }, 300);
-        }).catch(err => console.error("Error stopping for switch", err));
-      } else {
-        startCamera({ facingMode: nextMode });
-      }
-    } else {
-      toast.info("Thiết bị của bạn chỉ có 1 camera");
-    }
-  };
+
 
   const stopCamera = async () => {
     if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
@@ -297,9 +288,6 @@ export default function ScanTem() {
                 <option value="TEM_THUNG">Quét Tem THÙNG</option>
               </select>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <button className="switch-cam-btn" onClick={switchCamera} style={{ background: '#3182ce', color: 'white', border: 'none', padding: '6px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '12px' }}>
-                  Đổi Camera
-                </button>
                 <button className="close-btn" onClick={() => setIsScanModalOpen(false)}>
                   <X size={24} />
                 </button>
