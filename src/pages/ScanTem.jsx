@@ -46,19 +46,7 @@ export default function ScanTem() {
     return () => stopCamera();
   }, [isScanModalOpen]);
 
-  const initCameras = async () => {
-    // Keep this only for potential future fallback if needed
-    try {
-      const devices = await Html5Qrcode.getCameras();
-      if (devices && devices.length > 0) {
-        setCameras(devices);
-      }
-    } catch (err) {
-      console.error("Lỗi lấy danh sách camera", err);
-    }
-  };
-
-  const startCamera = async (forceCameraId = null) => {
+  const startCamera = async () => {
     try {
       if (html5QrCodeRef.current) {
         await stopCamera();
@@ -77,43 +65,40 @@ export default function ScanTem() {
       });
       html5QrCodeRef.current = html5QrCode;
 
-      if (cameras.length === 0) {
-        await initCameras();
+      let bestCameraId = null;
+      try {
+        const devices = await Html5Qrcode.getCameras();
+        if (devices && devices.length > 0) {
+          // Find back camera by common labels
+          const backCam = devices.find(c => 
+            c.label.toLowerCase().includes('back') || 
+            c.label.toLowerCase().includes('sau') || 
+            c.label.toLowerCase().includes('environment') ||
+            c.label.toLowerCase().includes('0')
+          );
+          // If no back camera found, fallback to the last camera in the list (usually the back camera on Android)
+          bestCameraId = backCam ? backCam.id : devices[devices.length - 1].id;
+        }
+      } catch (err) {
+        console.error("Lỗi lấy danh sách camera", err);
       }
 
-      // Start with strict environment (back) camera
-      try {
-        await html5QrCode.start(
-          { facingMode: { exact: "environment" } },
-          {
-            fps: 10,
-            qrbox: function(viewfinderWidth, viewfinderHeight) {
-               const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
-               const qrboxSize = Math.floor(minEdgeSize * 0.8);
-               return { width: qrboxSize, height: qrboxSize };
-            },
-            videoConstraints: { width: { ideal: 1920 }, height: { ideal: 1080 } }
+      const cameraConfig = bestCameraId ? { deviceId: { exact: bestCameraId } } : { facingMode: "environment" };
+
+      await html5QrCode.start(
+        cameraConfig,
+        {
+          fps: 10,
+          qrbox: function(viewfinderWidth, viewfinderHeight) {
+             const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+             const qrboxSize = Math.floor(minEdgeSize * 0.8);
+             return { width: qrboxSize, height: qrboxSize };
           },
-          onScanSuccess,
-          onScanFailure
-        );
-      } catch (exactErr) {
-        console.warn("Không thể mở camera sau bắt buộc, thử mở camera mặc định", exactErr);
-        // Fallback to any available camera (useful for PC webcams)
-        await html5QrCode.start(
-          { facingMode: "environment" },
-          {
-            fps: 10,
-            qrbox: function(viewfinderWidth, viewfinderHeight) {
-               const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
-               const qrboxSize = Math.floor(minEdgeSize * 0.8);
-               return { width: qrboxSize, height: qrboxSize };
-            }
-          },
-          onScanSuccess,
-          onScanFailure
-        );
-      }
+          videoConstraints: { width: { ideal: 1920 }, height: { ideal: 1080 } }
+        },
+        onScanSuccess,
+        onScanFailure
+      );
     } catch (err) {
       console.error("Camera error:", err);
       toast.error("Không thể mở Camera. Vui lòng cấp quyền truy cập!");
@@ -282,7 +267,7 @@ export default function ScanTem() {
                 value={scanType} 
                 onChange={(e) => setScanType(e.target.value)}
                 className="scan-type-selector"
-                style={{ fontSize: '14px', padding: '6px', width: '60%' }}
+                style={{ maxWidth: '150px' }}
               >
                 <option value="TEM_BICH">Quét Tem BỊCH</option>
                 <option value="TEM_THUNG">Quét Tem THÙNG</option>
@@ -295,24 +280,6 @@ export default function ScanTem() {
             </div>
           </div>
           
-          <div style={{ padding: '0 10px', marginBottom: '10px', boxSizing: 'border-box', width: '100%' }}>
-            <input 
-              type="text" 
-              placeholder="Hoặc bấm vào đây để dùng súng bắn mã USB..." 
-              style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box', fontSize: '14px' }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  const val = e.target.value.trim();
-                  if (val) {
-                    onScanSuccess(val);
-                    e.target.value = '';
-                  }
-                }
-              }}
-              autoFocus
-            />
-          </div>
-
           <div className="camera-container">
             <div id={scannerContainerId} className="scanner-view"></div>
             {isProcessing && (
