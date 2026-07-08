@@ -115,21 +115,13 @@ export default function ScanTem() {
       }
     } catch (err) {
       console.error("Camera error:", err);
-      toast.error("Không thể mở Camera. Vui lòng cấp quyền hoặc Đổi Camera!");
+      toast.error("Không thể mở Camera. Vui lòng cấp quyền hoặc đổi Camera khác!");
     }
   };
 
-  const switchCamera = () => {
-    if (cameras.length > 1) {
-      const currentIndex = cameras.findIndex(c => c.id === activeCameraId);
-      const nextIndex = (currentIndex + 1) % cameras.length;
-      const nextCamId = cameras[nextIndex].id;
-      
-      toast.info(`Đang chuyển sang Camera thứ ${nextIndex + 1}...`);
-      startCamera(nextCamId);
-    } else {
-      toast.info("Thiết bị của bạn chỉ báo cáo 1 camera.");
-    }
+  const handleCameraChange = (e) => {
+    const selectedId = e.target.value;
+    startCamera(selectedId);
   };
   const stopCamera = async () => {
     if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
@@ -296,11 +288,22 @@ export default function ScanTem() {
                 <option value="TEM_BICH">Quét Tem BỊCH</option>
                 <option value="TEM_THUNG">Quét Tem THÙNG</option>
               </select>
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <button className="switch-cam-btn" onClick={switchCamera} style={{ background: '#3182ce', color: 'white', border: 'none', padding: '6px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '12px' }}>
-                  Đổi
-                </button>
-                <button className="close-btn" onClick={() => setIsScanModalOpen(false)}>
+              <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+                {cameras.length > 0 && (
+                  <select
+                    value={activeCameraId || ''}
+                    onChange={handleCameraChange}
+                    className="scan-type-selector"
+                    style={{ maxWidth: '120px', background: '#3182ce', borderColor: '#3182ce' }}
+                  >
+                    {cameras.map((c, index) => (
+                      <option key={c.id} value={c.id}>
+                        {c.label || `Camera ${index + 1}`}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                <button className="close-btn" onClick={() => setIsScanModalOpen(false)} style={{ padding: '4px' }}>
                   <X size={24} />
                 </button>
               </div>
