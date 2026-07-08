@@ -288,6 +288,7 @@ export default function ScanTem() {
                 <option value="TEM_BICH">Quét Tem BỊCH</option>
                 <option value="TEM_THUNG">Quét Tem THÙNG</option>
               </select>
+              <span style={{ fontSize: '12px', color: '#ffd700', marginLeft: '5px' }}>(V3)</span>
               <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
                 {cameras.length > 0 && (
                   <select
