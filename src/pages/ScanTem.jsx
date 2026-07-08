@@ -46,25 +46,18 @@ export default function ScanTem() {
     return () => stopCamera();
   }, [isScanModalOpen]);
 
+  const [cameraMode, setCameraMode] = useState("environment");
+
   const initCameras = async () => {
+    // We no longer strictly need this for facingMode, but keep it for fallback info
     try {
       const devices = await Html5Qrcode.getCameras();
       if (devices && devices.length > 0) {
         setCameras(devices);
-        let backCam = devices.find(c => 
-          c.label.toLowerCase().includes('back') || 
-          c.label.toLowerCase().includes('sau') || 
-          c.label.toLowerCase().includes('environment') ||
-          c.label.toLowerCase().includes('0')
-        );
-        let selectedId = backCam ? backCam.id : devices[devices.length - 1].id;
-        setActiveCameraId(selectedId);
-        return selectedId;
       }
     } catch (err) {
       console.error("Lỗi lấy danh sách camera", err);
     }
-    return null;
   };
 
   const startCamera = async (forceCameraId = null) => {
@@ -86,12 +79,11 @@ export default function ScanTem() {
       });
       html5QrCodeRef.current = html5QrCode;
 
-      let camId = forceCameraId || activeCameraId;
-      if (!camId) {
-        camId = await initCameras();
+      if (cameras.length === 0) {
+        await initCameras();
       }
 
-      const cameraConfig = camId ? camId : { facingMode: "environment" };
+      const cameraConfig = forceCameraId ? forceCameraId : { facingMode: cameraMode };
 
       await html5QrCode.start(
         cameraConfig,
@@ -117,12 +109,23 @@ export default function ScanTem() {
   };
 
   const switchCamera = () => {
-    if (cameras.length > 1) {
-      const currentIndex = cameras.findIndex(c => c.id === activeCameraId);
-      const nextIndex = (currentIndex + 1) % cameras.length;
-      const nextCamId = cameras[nextIndex].id;
-      setActiveCameraId(nextCamId);
-      startCamera(nextCamId);
+    if (cameras.length > 1 || cameras.length === 0) {
+      // Toggle facing mode
+      const nextMode = cameraMode === "environment" ? "user" : "environment";
+      setCameraMode(nextMode);
+      
+      // Stop and restart with new mode
+      if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
+        html5QrCodeRef.current.stop().then(() => {
+          html5QrCodeRef.current.clear();
+          // We must wait a tiny bit for the camera hardware to release before starting the other one
+          setTimeout(() => {
+            startCamera({ facingMode: nextMode });
+          }, 300);
+        }).catch(err => console.error("Error stopping for switch", err));
+      } else {
+        startCamera({ facingMode: nextMode });
+      }
     } else {
       toast.info("Thiết bị của bạn chỉ có 1 camera");
     }
